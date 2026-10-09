@@ -1,0 +1,22 @@
+{
+  "name": "ultron",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/web",
+    "apps/desktop",
+    "services/cloud-worker"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @ultron/web",
+    "desktop": "npm run dev -w @ultron/desktop",
+    "build": "npm run build -w @ultron/web && npm run build -w @ultron/desktop",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "package:win": "npm run build && npm run package:win -w @ultron/desktop"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
+    "playwright": "^1.63.0"
+  }
+}

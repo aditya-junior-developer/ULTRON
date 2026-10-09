@@ -1,0 +1,65 @@
+{
+  "name": "@ultron/desktop",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/main.cjs",
+  "scripts": {
+    "dev": "npm run build && electron .",
+    "build": "esbuild src/main.ts --bundle --platform=node --external:electron --format=cjs --outfile=dist/main.cjs && esbuild src/preload.ts --bundle --platform=node --external:electron --format=cjs --outfile=dist/preload.cjs",
+    "typecheck": "tsc --noEmit",
+    "package:win": "electron-builder --win nsis portable --publish never"
+  },
+  "devDependencies": {
+    "electron": "^44.7.0",
+    "electron-builder": "^26.15.3",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.8.0",
+    "@types/node": "^24.0.0"
+  },
+  "build": {
+    "appId": "dev.ultron.assistant",
+    "productName": "ULTRON",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**"
+    ],
+    "extraResources": [
+      {
+        "from": "../web/dist",
+        "to": "web"
+      },
+      {
+        "from": "../../build/agent",
+        "to": "agent"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "artifactName": "ULTRON-Setup-${version}-${arch}.${ext}"
+    },
+    "portable": {
+      "artifactName": "ULTRON-Portable-${version}-${arch}.${ext}"
+    }
+  }
+}
